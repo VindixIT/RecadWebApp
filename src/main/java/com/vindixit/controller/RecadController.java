@@ -18,8 +18,6 @@ import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets.Details;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -27,6 +25,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.vindixit.business.facade.SQLGeneratorFacade;
 import com.vindixit.model.Recad;
@@ -37,8 +36,8 @@ public class RecadController {
 	private static HttpTransport HTTP_TRANSPORT;
 	private static GoogleAuthorizationCodeFlow flow;
 	private static Credential credential;
-	private static String CLIENT_ID = "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
-	private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
+	private static String CLIENT_ID = "466497924499-js8fap6fktmrao13btga74ibjt4pl438.apps.googleusercontent.com";
+	private static String CLIENT_SECRET = "sbTA1m5fVAT1BMF2tO9hTu4g";
 	private static String REDIRECT_URI = "http://localhost:8080/RecadWebApp/recad";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String APPLICATION_NAME = "RecadWebApp";
@@ -74,9 +73,6 @@ public class RecadController {
 	private String authorize() {
 		AuthorizationCodeRequestUrl authorizationUrl;
 		if (flow == null) {
-			Details web = new Details();
-			web.setClientId(CLIENT_ID);
-			web.setClientSecret(CLIENT_SECRET);
 			try {
 				HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 			} catch (GeneralSecurityException e) {
@@ -100,7 +96,11 @@ public class RecadController {
 			service = getSheetsService();
 			String spreadsheetId = recad.getId();
 			Spreadsheets spreadsheets = service.spreadsheets();
-			String range = "Novos em 09_08_2016!A2:J";
+			
+			Spreadsheet spreadsheet = spreadsheets.get(spreadsheetId).setIncludeGridData(false).execute();
+			String gridName = spreadsheet.getSheets().get(spreadsheet.getSheets().size()-1).getProperties().getTitle();
+			System.out.println(gridName);
+			String range = gridName+"!A2:J";
 			ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 			List<List<Object>> values = response.getValues();
 			String s = "";
