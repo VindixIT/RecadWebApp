@@ -26,29 +26,29 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.Sheets.Spreadsheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.vindixit.business.facade.SQLGeneratorFacade;
 import com.vindixit.model.Recad;
 
 @Controller
 public class RecadController {
 
-	private static GoogleClientSecrets clientSecrets;
-	private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
 	private static HttpTransport HTTP_TRANSPORT;
 	private static GoogleAuthorizationCodeFlow flow;
 	private static Credential credential;
-	private static String CLIENT_ID = "558025062437-ofcm274vst10j2dk96tn8sd84fcptqlk.apps.googleusercontent.com";
-	private static String CLIENT_SECRET = "BQKpiXO23nSAtOlVKYiDYUZJ";
+	private static String CLIENT_ID = "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
+	private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
 	private static String REDIRECT_URI = "http://localhost:8080/RecadWebApp/recad";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String APPLICATION_NAME = "RecadWebApp";
+	private SQLGeneratorFacade sqlGeneratorFacade;
 
 	@RequestMapping(value = "/service.do", method = RequestMethod.GET)
 	public RedirectView service(Model model) {
 		Recad recad = new Recad();
 		model.addAttribute("recad", recad);
-		if(credential!=null){
+		if (credential != null) {
 			return new RedirectView("recad");
 		}
 		return new RedirectView(authorize());
@@ -56,12 +56,9 @@ public class RecadController {
 
 	@RequestMapping(value = "/recad", method = RequestMethod.GET)
 	public String recad(Model model) {
-		Recad recad = new Recad();
-		System.err.println(credential);
-		model.addAttribute("recad", recad);
 		return "recad";
 	}
-	
+
 	@RequestMapping(value = "/recad", method = RequestMethod.GET, params = "code")
 	public ModelAndView oauth2Callback(@RequestParam(value = "code") String code, ModelAndView mv) {
 		TokenResponse response;
@@ -80,7 +77,6 @@ public class RecadController {
 			Details web = new Details();
 			web.setClientId(CLIENT_ID);
 			web.setClientSecret(CLIENT_SECRET);
-			clientSecrets = new GoogleClientSecrets().setWeb(web);
 			try {
 				HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 			} catch (GeneralSecurityException e) {
@@ -103,14 +99,15 @@ public class RecadController {
 		try {
 			service = getSheetsService();
 			String spreadsheetId = recad.getId();
-			String range = "Plan2!A2:J";
-			ValueRange response = service.spreadsheets().values()
-					.get(spreadsheetId, range)
-					.execute();
+			Spreadsheets spreadsheets = service.spreadsheets();
+			String range = "Novos em 09_08_2016!A2:J";
+			ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 			List<List<Object>> values = response.getValues();
-			String s = "CPF SERVIDOR, NOME\n";
+			String s = "";
+			sqlGeneratorFacade = new SQLGeneratorFacade();
 			for (List row : values) {
-				s = s + row.get(0) + ", " +row.get(2) + "\n";
+				s = s + sqlGeneratorFacade.cadastroUsuarios(row);
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalUG(row);
 			}
 			recad.setContent(s);
 		} catch (IOException e) {
@@ -120,10 +117,9 @@ public class RecadController {
 		return "result";
 	}
 
-	
-    public static Sheets getSheetsService() throws IOException {
-        return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-    }
+	public static Sheets getSheetsService() throws IOException {
+		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
+				.build();
+	}
+
 }
