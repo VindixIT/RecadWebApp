@@ -36,9 +36,18 @@ public class RecadController {
 	private static HttpTransport HTTP_TRANSPORT;
 	private static GoogleAuthorizationCodeFlow flow;
 	private static Credential credential;
-	private static String CLIENT_ID = "466497924499-js8fap6fktmrao13btga74ibjt4pl438.apps.googleusercontent.com";
-	private static String CLIENT_SECRET = "sbTA1m5fVAT1BMF2tO9hTu4g";
-	private static String REDIRECT_URI = "http://localhost:8080/RecadWebApp/recad";
+	/*
+	 * masaru@vindixit.com
+	 */
+//	private static String CLIENT_ID = "466497924499-js8fap6fktmrao13btga74ibjt4pl438.apps.googleusercontent.com";
+//	private static String CLIENT_SECRET = "sbTA1m5fVAT1BMF2tO9hTu4g";
+//	private static String REDIRECT_URI = "http://localhost:8080/RecadWebApp/recad";
+
+	 private static String CLIENT_ID =
+	 "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
+	 private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
+	 private static String REDIRECT_URI =
+	 "http://localhost:8080/RecadWebApp/recad";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String APPLICATION_NAME = "RecadWebApp";
 	private SQLGeneratorFacade sqlGeneratorFacade;
@@ -83,7 +92,7 @@ public class RecadController {
 			flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
 					JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, Arrays.asList(DriveScopes.DRIVE,
 							"https://spreadsheets.google.com/feeds", "https://docs.google.com/feeds"))
-									.setAccessType("online").setApprovalPrompt("auto").build();
+									.setAccessType("offline").setApprovalPrompt("force").build();
 		}
 		authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI);
 		return authorizationUrl.build();
@@ -96,11 +105,12 @@ public class RecadController {
 			service = getSheetsService();
 			String spreadsheetId = recad.getId();
 			Spreadsheets spreadsheets = service.spreadsheets();
-			
+
 			Spreadsheet spreadsheet = spreadsheets.get(spreadsheetId).setIncludeGridData(false).execute();
-			String gridName = spreadsheet.getSheets().get(spreadsheet.getSheets().size()-1).getProperties().getTitle();
+			String gridName = spreadsheet.getSheets().get(spreadsheet.getSheets().size() - 1).getProperties()
+					.getTitle();
 			System.out.println(gridName);
-			String range = gridName+"!A2:J";
+			String range = gridName + "!A2:AT";
 			ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 			List<List<Object>> values = response.getValues();
 			String s = "";
@@ -108,6 +118,9 @@ public class RecadController {
 			for (List row : values) {
 				s = s + sqlGeneratorFacade.cadastroUsuarios(row);
 				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalUG(row);
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalCONF(row);
+				s = s + sqlGeneratorFacade.cadastroGrupos(row);
+				s = s + sqlGeneratorFacade.cadastroGrupoFlexvision();
 			}
 			recad.setContent(s);
 		} catch (IOException e) {
