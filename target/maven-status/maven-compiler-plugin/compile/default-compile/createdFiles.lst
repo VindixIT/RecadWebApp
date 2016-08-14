@@ -1,0 +1,3 @@
+com\vindixit\controller\RecadController.class
+com\vindixit\business\facade\SQLGeneratorFacade.class
+com\vindixit\model\Recad.class

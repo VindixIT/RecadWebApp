@@ -107,7 +107,7 @@ button {
 					<label>SQL:</label>
 				</dt>
 				<dd>
-					<button type=button data-copytarget="#content">copy</button>
+					<button type=button data-copytarget="#content">Copiar</button>
 					<button type=button onClick="window.location='service.do'">Novo</button>
 				</dd>
 				<dd>
