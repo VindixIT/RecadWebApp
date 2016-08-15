@@ -133,5 +133,10 @@ public class RecadController {
 		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
 				.build();
 	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index(Model model) {
+		return "index";
+	}
 
 }
