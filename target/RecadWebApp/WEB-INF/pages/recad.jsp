@@ -1,4 +1,6 @@
-<!DOCTYPE HTML>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<%@ page isELIgnored="false" %> 
 <html>
 <head>
     <title>Recadastramento de Usuários</title>
@@ -83,7 +85,7 @@ button {
 </head>
 <body onLoad="document.getElementById('id').focus()">
 	<h1>Recadastramento de Usuários</h1>
-    <form action="recad" method="POST">
+    <form action="recad">
     	<label>URL da Planilha:</label>
     	<input type="text" size="120" name="id" id="id" value="" class="url"/><button type=submit>Gerar</button><button type=reset>Limpar</button>
     </form>

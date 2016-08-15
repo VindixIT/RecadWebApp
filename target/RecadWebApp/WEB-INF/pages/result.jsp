@@ -1,4 +1,6 @@
-<!DOCTYPE HTML>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<%@ page isELIgnored="false" %> 
 <html>
 <head>
 <style type="text/css">
@@ -83,7 +85,7 @@ button {
 }
 </style>
 
-<SCRIPT LANGUAGE="JavaScript">
+<SCRIPT type="text/javascript">
 	function ClipBoard() {
 		alert(content.selectionStart + ' ' + content.selectionEnd);
 		alert(content.innerText);
@@ -94,7 +96,7 @@ button {
 </head>
 <body>
 	<h1>Resultado SQL</h1>
-	<form action="service.do" method="#">
+	<form action="service.do">
 		<fieldset>
 			<dl>
 				<dt>
@@ -118,7 +120,7 @@ button {
 	</form>
 </body>
 
-<SCRIPT LANGUAGE="JavaScript">
+<script type="text/javascript">
 	(function() {
 
 		'use strict';
@@ -158,6 +160,6 @@ button {
 		}
 
 	})();
-</SCRIPT>
+</script>
 
 </html>
