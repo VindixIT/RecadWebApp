@@ -85,7 +85,7 @@ button {
 </head>
 <body onLoad="document.getElementById('id').focus()">
 	<h1>Recadastramento de Usuários</h1>
-    <form action="recad">
+    <form action="recad" method="post">
     	<label>URL da Planilha:</label>
     	<input type="text" size="120" name="id" id="id" value="" class="url"/><button type=submit>Gerar</button><button type=reset>Limpar</button>
     </form>
