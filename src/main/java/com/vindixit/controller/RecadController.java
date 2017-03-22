@@ -108,7 +108,6 @@ public class RecadController {
 			Spreadsheet spreadsheet = spreadsheets.get(spreadsheetId).setIncludeGridData(false).execute();
 			String gridName = spreadsheet.getSheets().get(spreadsheet.getSheets().size() - 1).getProperties()
 					.getTitle();
-			System.out.println(gridName);
 			String range = gridName + "!A2:AT";
 			ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 			List<List<Object>> values = response.getValues();
