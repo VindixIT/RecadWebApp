@@ -44,10 +44,10 @@ public class SQLGeneratorFacade {
 		if (null != ugLotacao
 				&& (ugLotacao.equals("299004") || (!"999900, 200700, 200800, 200299".contains(ugLotacao)) && !"200299".equals(ugExecucao))) {
 
-			s = "INSERT\r\n" + "INTO SIAFE_RIO_2016.SPA_PERFIL_INSTITUCIONAL_UG\r\n" + "  (\r\n"
+			s = "INSERT\r\n" + "INTO SIAFE_RIO_2017.SPA_PERFIL_INSTITUCIONAL_UG\r\n" + "  (\r\n"
 					+ "    ANO_EXERCICIO_CTX,\r\n" + "    COD_CLIENTE_CTX,\r\n" + "    COD_USUARIO,\r\n"
 					+ "    COD_UG,\r\n" + "    IND_NIVEL_ACESSO,\r\n" + "    COD_UG_PRINCIPAL\r\n" + "  )\r\n"
-					+ "  VALUES\r\n" + "  (\r\n" + "    '2016', \r\n" + "    '00001', \r\n" + "    LPAD('" + cpf
+					+ "  VALUES\r\n" + "  (\r\n" + "    '2017', \r\n" + "    '00001', \r\n" + "    LPAD('" + cpf
 					+ "',11,0), \r\n" + "    LPAD('" + ugExecucao + "', 6, 0), \r\n" + "    1, \r\n" + "    LPAD('"
 					+ ugExecucao + "', 6, 0)\r\n" + "  );\r\n\n\n";
 		} else {
@@ -64,14 +64,14 @@ public class SQLGeneratorFacade {
 				ugPrincipal = "200800";
 			}
 
-			s = "INSERT\r\n" + "INTO SIAFE_RIO_2016.SPA_PERFIL_INSTITUCIONAL_UG\r\n" + "  (\r\n"
+			s = "INSERT\r\n" + "INTO SIAFE_RIO_2017.SPA_PERFIL_INSTITUCIONAL_UG\r\n" + "  (\r\n"
 					+ "    ANO_EXERCICIO_CTX,\r\n" + "    COD_CLIENTE_CTX,\r\n" + "    COD_USUARIO,\r\n"
 					+ "    COD_UG,\r\n" + "    IND_NIVEL_ACESSO,\r\n" + "    COD_UG_PRINCIPAL\r\n" + ")\r\n"
-					+ "SELECT '2016' ANO_EXERCICIO_CTX,'00001' COD_CLIENTE_CTX,LPAD(A.COD_USUARIO,11,0) COD_USUARIO, LPAD(B.COD_UG, 6, 0) COD_UG, 1 IND_NIVEL_ACESSO,\r\n"
+					+ "SELECT '2017' ANO_EXERCICIO_CTX,'00001' COD_CLIENTE_CTX,LPAD(A.COD_USUARIO,11,0) COD_USUARIO, LPAD(B.COD_UG, 6, 0) COD_UG, 1 IND_NIVEL_ACESSO,\r\n"
 					+ "LPAD('" + ugPrincipal + "',6,0)\r\n"
-					+ "FROM SIAFE_RIO.SEG_USUARIO A, SIAFE_RIO_2016.SPA_UG B\r\n" + "    WHERE A.COD_USUARIO = LPAD('"
+					+ "FROM SIAFE_RIO.SEG_USUARIO A, SIAFE_RIO_2017.SPA_UG B\r\n" + "    WHERE A.COD_USUARIO = LPAD('"
 					+ cpf + "',6,0) \r\n" + "    AND NOT EXISTS (\r\n"
-					+ "        SELECT 1 FROM SIAFE_RIO_2016.SPA_UG C \r\n" + "        WHERE B.COD_UG = C.COD_UG\r\n"
+					+ "        SELECT 1 FROM SIAFE_RIO_2017.SPA_UG C \r\n" + "        WHERE B.COD_UG = C.COD_UG\r\n"
 					+ "        AND C.COD_UG <> LPAD('" + ugLotacao + "', 6, 0)\r\n"
 					+ "        AND (COD_UG LIKE '299%' OR COD_UG IN ('200299','200700','200800'))\r\n"
 					+ "        AND LPAD('" + ugLotacao + "', 6, 0) NOT IN ('299005','299006','299007')\r\n" + "  )\r\n"
@@ -90,9 +90,9 @@ public class SQLGeneratorFacade {
 		String s = "";
 		if (null != ugLotacao && ("299004, 299005, 299006, 299007, 299009".contains(ugLotacao))) {
 			s = "INSERT\r\n";
-			s += "INTO SIAFE_RIO_2016.SPA_PERFIL_INSTITUCIONAL_CONF\n\r" + " (\n\r" + "    ANO_EXERCICIO_CTX,\n\r"
+			s += "INTO SIAFE_RIO_2017.SPA_PERFIL_INSTITUCIONAL_CONF\n\r" + " (\n\r" + "    ANO_EXERCICIO_CTX,\n\r"
 					+ "    COD_CLIENTE_CTX,\n\r" + "    COD_USUARIO,\n\r" + "    COD_UG,\n\r" + "    FLG_GESTOR\n\r"
-					+ "  )\n\r" + "  VALUES\n\r" + "  ('2016', '00001', LPAD('" + cpf + "',11,0),LPAD('" + ugLotacao
+					+ "  )\n\r" + "  VALUES\n\r" + "  ('2017', '00001', LPAD('" + cpf + "',11,0),LPAD('" + ugLotacao
 					+ "',6,0),'0');\n";
 
 		} else {
