@@ -48,7 +48,7 @@ public class RecadController {
 	private static String CLIENT_ID = "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
 	private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
 	// private static String REDIRECT_URI = "https://localhost:8080/RecadWebApp/recad";
-	private static String REDIRECT_URI = "https://recad.herokuapp.com/recad";
+	private static String REDIRECT_URI = "https://recadtest.herokuapp.com/recad";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String APPLICATION_NAME = "RecadWebApp";
 	private SQLGeneratorFacade sqlGeneratorFacade;
