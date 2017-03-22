@@ -42,7 +42,7 @@ public class SQLGeneratorFacade {
 
 		String s = "";
 		if (null != ugLotacao
-				&& (ugLotacao.equals("299004") || !"999900, 200700, 200800, 200299".contains(ugLotacao))) {
+				&& (ugLotacao.equals("299004") || (!"999900, 200700, 200800, 200299".contains(ugLotacao))&&!"200299".equals(ugExecucao))) {
 
 			s = "INSERT\r\n" + "INTO SIAFE_RIO_2016.SPA_PERFIL_INSTITUCIONAL_UG\r\n" + "  (\r\n"
 					+ "    ANO_EXERCICIO_CTX,\r\n" + "    COD_CLIENTE_CTX,\r\n" + "    COD_USUARIO,\r\n"
@@ -143,4 +143,6 @@ public class SQLGeneratorFacade {
 		s +="	);\n";
 		return s;
 	}
+
+
 }
