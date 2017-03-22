@@ -70,7 +70,7 @@ public class SQLGeneratorFacade {
 					+ "SELECT '"+anoExercicio+"' ANO_EXERCICIO_CTX,'00001' COD_CLIENTE_CTX,LPAD(A.COD_USUARIO,11,0) COD_USUARIO, LPAD(B.COD_UG, 6, 0) COD_UG, 1 IND_NIVEL_ACESSO,\r\n"
 					+ "LPAD('" + ugPrincipal + "',6,0)\r\n"
 					+ "FROM SIAFE_RIO.SEG_USUARIO A, SIAFE_RIO_"+anoExercicio+".SPA_UG B\r\n" + "    WHERE A.COD_USUARIO = LPAD('"
-					+ cpf + "',6,0) \r\n" + "    AND NOT EXISTS (\r\n"
+					+ cpf + "',11,0) \r\n" + "    AND NOT EXISTS (\r\n"
 					+ "        SELECT 1 FROM SIAFE_RIO_"+anoExercicio+".SPA_UG C \r\n" + "        WHERE B.COD_UG = C.COD_UG\r\n"
 					+ "        AND C.COD_UG <> LPAD('" + ugLotacao + "', 6, 0)\r\n"
 					+ "        AND (COD_UG LIKE '299%' OR COD_UG IN ('200299','200700','200800'))\r\n"
