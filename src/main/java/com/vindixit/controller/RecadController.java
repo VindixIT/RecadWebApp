@@ -39,14 +39,16 @@ public class RecadController {
 	/*
 	 * masaru@vindixit.com
 	 */
-	private static String CLIENT_ID = "466497924499-js8fap6fktmrao13btga74ibjt4pl438.apps.googleusercontent.com";
-	private static String CLIENT_SECRET = "sbTA1m5fVAT1BMF2tO9hTu4g";
+	// private static String CLIENT_ID =
+	// "466497924499-js8fap6fktmrao13btga74ibjt4pl438.apps.googleusercontent.com";
+	// private static String CLIENT_SECRET = "sbTA1m5fVAT1BMF2tO9hTu4g";
 	/*
 	 * masaru@logusinfo.com.br
 	 */
-//	 private static String CLIENT_ID = "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
-//	 private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
-	private static String REDIRECT_URI = "https://localhost:8080/RecadWebApp/recad";
+	private static String CLIENT_ID = "483811954263-92vval79jhbf232c5mogvmb7bna49rl7.apps.googleusercontent.com";
+	private static String CLIENT_SECRET = "gOxKb9xx4_r9MukauIsH_CN-";
+	// private static String REDIRECT_URI = "https://localhost:8080/RecadWebApp/recad";
+	private static String REDIRECT_URI = "https://recad.herokuapp.com/recad";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String APPLICATION_NAME = "RecadWebApp";
 	private SQLGeneratorFacade sqlGeneratorFacade;
@@ -88,10 +90,10 @@ public class RecadController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
-					JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, Arrays.asList(DriveScopes.DRIVE,
-							"https://spreadsheets.google.com/feeds", "https://docs.google.com/feeds"))
-									.setAccessType("offline").setApprovalPrompt("force").build();
+			flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET,
+					Arrays.asList(DriveScopes.DRIVE, "https://spreadsheets.google.com/feeds",
+							"https://docs.google.com/feeds")).setAccessType("offline").setApprovalPrompt("force")
+									.build();
 		}
 		authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI);
 		return authorizationUrl.build();
@@ -132,7 +134,7 @@ public class RecadController {
 		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
 				.build();
 	}
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) {
 		return "index";
