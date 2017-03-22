@@ -68,7 +68,7 @@ public class RecadController {
 		return "recad";
 	}
 
-	@RequestMapping(value = "/recad", method = RequestMethod.POST, params = "code")
+	@RequestMapping(value = "/recad", method = RequestMethod.GET, params = "code")
 	public ModelAndView oauth2Callback(@RequestParam(value = "code") String code, ModelAndView mv) {
 		TokenResponse response;
 		try {
@@ -90,10 +90,10 @@ public class RecadController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET,
-					Arrays.asList(DriveScopes.DRIVE, "https://spreadsheets.google.com/feeds",
-							"https://docs.google.com/feeds")).setAccessType("offline").setApprovalPrompt("force")
-									.build();
+			flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
+					JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, Arrays.asList(DriveScopes.DRIVE,
+							"https://spreadsheets.google.com/feeds", "https://docs.google.com/feeds"))
+									.setAccessType("offline").setApprovalPrompt("force").build();
 		}
 		authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI);
 		return authorizationUrl.build();
@@ -110,6 +110,7 @@ public class RecadController {
 			Spreadsheet spreadsheet = spreadsheets.get(spreadsheetId).setIncludeGridData(false).execute();
 			String gridName = spreadsheet.getSheets().get(spreadsheet.getSheets().size() - 1).getProperties()
 					.getTitle();
+			System.out.println(gridName);
 			String range = gridName + "!A2:AT";
 			ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 			List<List<Object>> values = response.getValues();
@@ -117,13 +118,16 @@ public class RecadController {
 			sqlGeneratorFacade = new SQLGeneratorFacade();
 			for (List row : values) {
 				s = s + sqlGeneratorFacade.cadastroUsuarios(row);
-				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalUG(row);
-				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalCONF(row);
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalUG(row, "2016");
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalUG(row, "2017");
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalCONF(row, "2016");
+				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalCONF(row, "2017");
 				s = s + sqlGeneratorFacade.cadastroGrupos(row);
 				s = s + sqlGeneratorFacade.cadastroGrupoFlexvision();
 			}
 			recad.setContent(s);
 		} catch (IOException e) {
+			recad.setContent(e.getMessage());
 			e.printStackTrace();
 		}
 		model.addAttribute("recad", recad);
