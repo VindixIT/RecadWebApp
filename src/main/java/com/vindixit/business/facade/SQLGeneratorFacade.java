@@ -139,7 +139,7 @@ public class SQLGeneratorFacade {
 		s +="	 (SELECT NULL\n";
 		s +="	 FROM SIAFE_RIO.SEG_USUARIO_GRUPO B\n";
 		s +="	 WHERE A.COD_USUARIO = B.COD_USUARIO\n";
-		s +="	 AND B.COD_GRUPO     = '70007'\n\r";
+		s +="	 AND B.COD_GRUPO     = '70007'\n\r\n\n\n";
 		s +="	);\n";
 		return s;
 	}
