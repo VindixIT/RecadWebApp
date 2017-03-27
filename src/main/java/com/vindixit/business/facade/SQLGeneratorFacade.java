@@ -139,7 +139,7 @@ public class SQLGeneratorFacade {
 		s +="	 (SELECT NULL\n";
 		s +="	 FROM SIAFE_RIO.SEG_USUARIO_GRUPO B\n";
 		s +="	 WHERE A.COD_USUARIO = B.COD_USUARIO\n";
-		s +="	 AND B.COD_GRUPO     = '70007'\n";
+		s +="	 AND B.COD_GRUPO     = '70007'\n\r";
 		s +="	);\n";
 		return s;
 	}
@@ -147,9 +147,9 @@ public class SQLGeneratorFacade {
 	public String cadastroBloqueioFunc(List row, String ano) {
 		String cpf = ((String) row.get(0));
 		String s = "UPDATE SIAFE_RIO_"+ano+".SPA_BLOQUEIO_FUNC_USUARIO \r\n" + 
-				"SET COD_USUARIOS = (SELECT COD_USUARIOS\r\n" + 
-				"FROM SIAFE_RIO_"+ano+".SPA_BLOQUEIO_FUNC_USUARIO\r\n" + 
-				"WHERE COD_FUNCS_BLOQUEADAS IS NULL) || ';' || LPAD('"+cpf+"',11,0);\n";
+				"  SET COD_USUARIOS = (SELECT COD_USUARIOS\r\n" + 
+				"    FROM SIAFE_RIO_"+ano+".SPA_BLOQUEIO_FUNC_USUARIO\r\n" + 
+				"    WHERE COD_FUNCS_BLOQUEADAS IS NULL) || ';' || LPAD('"+cpf+"',11,0);\n\r";
 		return s;
 	}
 
