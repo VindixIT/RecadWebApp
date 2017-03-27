@@ -124,6 +124,8 @@ public class RecadController {
 				s = s + sqlGeneratorFacade.cadastroPerfilInstitucionalCONF(row, "2017");
 				s = s + sqlGeneratorFacade.cadastroGrupos(row);
 				s = s + sqlGeneratorFacade.cadastroGrupoFlexvision();
+				s = s + sqlGeneratorFacade.cadastroBloqueioFunc(row, "2016");
+				s = s + sqlGeneratorFacade.cadastroBloqueioFunc(row, "2017");
 			}
 			recad.setContent(s);
 		} catch (IOException e) {
